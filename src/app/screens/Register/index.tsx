@@ -12,9 +12,8 @@ import Animated, {
   withTiming
 } from "react-native-reanimated";
 
-export default function App() {
+export default function Register() {
   const router = useRouter();
-
 
   // Altura da tela para garantir que a view comece totalmente fora da tela
   const screenHeight = Dimensions.get("window").height;
@@ -48,7 +47,7 @@ export default function App() {
 
   return (
     <View className="flex-1 flex-col items-center justify-end bg-[#C02636]">
-      <View className="h-[300px] w-full items-center justify-center">
+      <View className="h-[200px] w-full items-center justify-center">
         <Image
           className="h-[48px] w-[204px]"
           source={require("@/src/app/assets/images/LogoM.png")}
@@ -59,7 +58,7 @@ export default function App() {
       <Animated.View
         onLayout={handleLayout}
         style={animatedStyle}
-        className="bg-white h-[550px] w-full justify-center items-center rounded-t-3xl flex-col"
+        className="bg-white h-[650px] w-full justify-center items-center rounded-t-3xl flex-col"
       >
         <View className="w-[85%] h-[85%] gap-6">
           <Text className="text-[18px] mt-3 mb-3 Text-[#17222B] font-bold">
@@ -76,12 +75,18 @@ export default function App() {
             <Input placeholder="Digite sua senha" />
           </View>
 
+          <View className="w-full gap-3">
+            <Text className="Text-[#17222B] font-[600]">Nome</Text>
+            <Input placeholder="ex: Elias" />
+          </View>
+
           {/* Buttons */}
           <View className="mt-7 gap-8">
-            <Button title="Entrar" />
-            <Button className="bg-[#17222b]" title="Registrar"
-              onPress={() => router.navigate('/screens/Register')}
+            <Button title="Entrar" 
+              onPress={() => router.navigate('/screens/Login/App')}
+
             />
+            <Button className="bg-[#17222b]" title="Salvar" />
           </View>
         </View>
       </Animated.View>

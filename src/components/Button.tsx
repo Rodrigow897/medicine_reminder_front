@@ -7,9 +7,10 @@ type Props = TouchableOpacityProps & {
   icon?: React.ReactNode;
 };
 
-export default function Button({ title, className, ...rest }: Props) {
+export default function Button({ title, className, onPress, ...rest }: Props) {
   return (
     <TouchableOpacity
+      onPress={onPress}
       className={`w-full h-[58px] bg-[#C02636] rounded-full justify-center items-center shadow-[#C02636] elevation-md ${className}`}
       {...rest}
     >
