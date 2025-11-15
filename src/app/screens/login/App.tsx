@@ -26,9 +26,12 @@ export default function App() {
           </View>
           
           {/*Buttons*/}
-          <View className="mt-7">
-            <Button
+          <View className="mt-7 gap-8">
+            <Button  
               title="Entrar"
+            />
+            <Button className="bg-[#17222B]"
+              title="Registrar"
             />
           </View>
           
