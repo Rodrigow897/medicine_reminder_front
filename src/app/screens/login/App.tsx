@@ -79,7 +79,7 @@ export default function App() {
           {/* Buttons */}
           <View className="mt-7 gap-8">
             <Button title="Entrar" />
-            <Button className="bg-[#17222b]" title="Registrar"
+            <Button className="bg-[#151f27]" title="Registrar"
               onPress={() => router.navigate('/screens/Register')}
             />
           </View>

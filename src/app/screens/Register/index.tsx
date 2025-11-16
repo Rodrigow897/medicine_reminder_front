@@ -82,11 +82,11 @@ export default function Register() {
 
           {/* Buttons */}
           <View className="mt-7 gap-8">
-            <Button title="Entrar" 
+            <Button title="Salvar" 
               onPress={() => router.navigate('/screens/Login/App')}
 
             />
-            <Button className="bg-[#17222b]" title="Salvar" />
+            <Button className="bg-[#162029]" title="Voltar" />
           </View>
         </View>
       </Animated.View>
