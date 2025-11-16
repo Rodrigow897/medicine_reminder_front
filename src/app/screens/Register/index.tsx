@@ -72,7 +72,7 @@ export default function Register() {
 
           <View className="w-full gap-3">
             <Text className="Text-[#17222B] font-[600]">Senha</Text>
-            <Input placeholder="Digite sua senha" />
+            <Input placeholder="Crie uma senha" />
           </View>
 
           <View className="w-full gap-3">
@@ -82,11 +82,12 @@ export default function Register() {
 
           {/* Buttons */}
           <View className="mt-7 gap-8">
-            <Button title="Salvar" 
-              onPress={() => router.navigate('/screens/Login/App')}
-
+            <Button className="bg-[#C02636]" 
+              title="Salvar" 
             />
-            <Button className="bg-[#162029]" title="Voltar" />
+            <Button className="bg-[#162029]" title="Voltar"
+              onPress={() => router.navigate('/screens/Login/App')}
+           />
           </View>
         </View>
       </Animated.View>
