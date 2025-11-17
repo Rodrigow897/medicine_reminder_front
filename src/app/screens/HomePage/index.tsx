@@ -1,3 +1,6 @@
+import Button from '@/src/components/Button';
+import FontAwesome from '@expo/vector-icons/FontAwesome';
+import Fontisto from '@expo/vector-icons/Fontisto';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from "expo-router";
 import { Text, TouchableOpacity, View } from "react-native";
@@ -15,7 +18,7 @@ export default function HomePage(){
                         {/*jaja eu coloco a imagem aqui*/}
                     </View>
                     <TouchableOpacity
-                        onPress={() => router.navigate('/screens/Login/App')}>
+                        onPress={() => router.navigate('/screens/login/App')}>
                         <MaterialIcons name="logout" size={30} color="red" />
                     </TouchableOpacity>
                 </View>
@@ -26,7 +29,28 @@ export default function HomePage(){
                 </View>
             </View>
 
-            <View className='bg-white flex-1 w-full self-end rounded-t-[30px]'></View>
+            <View className='bg-white flex-1 w-full flex-col items-center rounded-t-[30px]'>
+                <View className='w-[326px] h-[112px] bg-[#E8EEF3] flex-row elevation-md mt-14 rounded-2xl p-4 gap-7'>
+                    <View className='h-[88px] w-[80px] bg-[#D7E1EA] rounded-xl justify-center items-center'>
+                        <MaterialIcons name="receipt-long" size={38} color="blue" />
+                    </View>
+                    <View>
+                        <Text className='text-[#17222B] font-[800] text-[16px]'>Minhas receitas</Text>
+                    </View>
+                </View>
+                <View className='w-[326px] h-[112px] bg-[#E8EEF3] flex-row elevation-md mt-6 rounded-2xl p-4'>
+                    <View className='h-[88px] w-[80px] bg-[#D7E1EA] rounded-xl justify-center items-center'>
+                        <Fontisto name="pills" size={36} color="#C02636" />
+                    </View>
+
+                </View>
+
+                <Button className='w-[325px] absolute bottom-12 flex-row gap-2 bg-[#17222B]'
+                    icon={<FontAwesome name="star-o" size={24} color="white" />}
+                    title='Avaliar'
+                />
+
+            </View>
         </View>
     )
 }

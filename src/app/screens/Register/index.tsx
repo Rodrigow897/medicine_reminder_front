@@ -86,7 +86,7 @@ export default function Register() {
               title="Salvar" 
             />
             <Button className="bg-[#162029]" title="Voltar"
-              onPress={() => router.navigate('/screens/Login/App')}
+              onPress={() => router.navigate('/screens/login/App')}
            />
           </View>
         </View>
