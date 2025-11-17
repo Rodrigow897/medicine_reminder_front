@@ -54,7 +54,7 @@ export default function HomePage(){
                         <Fontisto name="pills" size={36} color="#C02636" />
                     </View>
 
-                    <TouchableOpacity onPress={() => router.navigate('/screens/AddReceipt')}>
+                    <TouchableOpacity onPress={() => router.navigate('/screens/AddPrescription')}>
                         <View className='gap-3 mt-2 relative'>
                             <AntDesign className='absolute top-0 right-0' name="right" size={20} color="#8dbbe3" />
                             <Text className='text-[#17222B] font-[800] text-[16px]'>Nova r eceita</Text>
