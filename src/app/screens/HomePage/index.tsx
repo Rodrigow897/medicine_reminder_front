@@ -39,7 +39,7 @@ export default function HomePage(){
                             <MaterialIcons name="receipt-long" size={38} color="blue" />
                         </View>
 
-                        <TouchableOpacity>
+                        <TouchableOpacity onPress={() => router.navigate('/screens/Prescriptions')}>
                             <View className='gap-3 mt-2 relative'>
                                 <AntDesign className='absolute top-0 right-0' name="right" size={20} color="#8dbbe3" />
                                 <Text className='text-[#17222B] font-[800] text-[16px]'>Minhas receitas</Text>

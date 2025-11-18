@@ -1,6 +1,8 @@
 import Button from '@/src/components/Button';
 import Input from '@/src/components/Input';
+import TimeInput from '@/src/components/TimeInput';
 import Ionicons from '@expo/vector-icons/Ionicons';
+import { useRouter } from "expo-router";
 import { useState } from 'react';
 import { Switch, Text, TouchableOpacity, View } from "react-native";
 
@@ -11,12 +13,13 @@ import { Switch, Text, TouchableOpacity, View } from "react-native";
 export default function AddPrescription() {
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    const router = useRouter();
 
 
     return (
         <View className="flex-1 items-center">
             <View className='w-[85%] mt-20 gap-5'>
-                <TouchableOpacity activeOpacity={0.4}>
+                <TouchableOpacity activeOpacity={0.4} onPress={() => router.navigate('/screens/HomePage')}>
                     <Ionicons name="arrow-back-sharp" size={32} color="black" />
                 </TouchableOpacity>
                 <Text className='text-[#C02636] text-[20px] font-[800] '>Nova receita</Text>
@@ -34,8 +37,7 @@ export default function AddPrescription() {
                     {/*input horario*/}
                     <View className='w-full gap-3'>
                         <Text className='text-[14px] font-[600]' >Horário</Text>
-                        <Input
-                            placeholder='00:00'
+                        <TimeInput
                         />
                     </View>
                     {/*input recorrencia*/}
