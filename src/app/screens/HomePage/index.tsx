@@ -57,7 +57,7 @@ export default function HomePage(){
                     <TouchableOpacity onPress={() => router.navigate('/screens/AddPrescription')}>
                         <View className='gap-3 mt-2 relative'>
                             <AntDesign className='absolute top-0 right-0' name="right" size={20} color="#8dbbe3" />
-                            <Text className='text-[#17222B] font-[800] text-[16px]'>Nova r eceita</Text>
+                            <Text className='text-[#17222B] font-[800] text-[16px]'>Nova receita</Text>
                             <Text>Cadastre novos lembretes de{'\n'}receitas</Text>
                         </View>
                     </TouchableOpacity>

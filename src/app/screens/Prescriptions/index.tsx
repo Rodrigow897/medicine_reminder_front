@@ -1,6 +1,13 @@
+import PrescriptionList from '@/src/components/PrescriptionList';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from 'expo-router';
 import { Text, TouchableOpacity, View } from 'react-native';
+
+
+
+
+
+
 
 export default function Prescriptions(){
     const router = useRouter();
@@ -27,7 +34,13 @@ export default function Prescriptions(){
                 </View>
             </View>
 
-            <View className='flex-1 bg-white w-full rounded-t-[30px]'></View>
+            <View className='flex-1 bg-white w-full rounded-t-[30px] items-center py-12'>
+                <View className='w-[85%] items-center'>
+                    <PrescriptionList/>
+                </View>
+
+
+            </View>
         </View>
     )
 }
