@@ -34,7 +34,7 @@ const Item = ({title, time, recurrence } : Prescription) => (
     <View className={"bg-[#E8EEF3] h-[102px] p-4 gap-3 w-full rounded-2xl mt-4"}>
         <View className="w-full justify-between flex-row">
             <Text className="text-[19px] font-[800] text-[#293C4C]">{title}</Text>
-            <TouchableOpacity><Ionicons name="trash-outline" size={20} color="red" /> </TouchableOpacity>
+            <TouchableOpacity><Ionicons name="trash-outline" size={20} color="red" /></TouchableOpacity>
         </View>
         <View className="flex-row gap-3">
             <View className="w-[74px] h-[28px] bg-[#CAD7E2] flex-row items-center gap-2 px-2 rounded-full">

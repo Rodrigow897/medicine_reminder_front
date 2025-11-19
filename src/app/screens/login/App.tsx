@@ -12,7 +12,7 @@ import Animated, {
   withTiming
 } from "react-native-reanimated";
 
-export default function App() {
+export function Index() {
   const router = useRouter();
 
 
@@ -91,3 +91,5 @@ export default function App() {
     </View>
   );
 }
+
+export default Index;

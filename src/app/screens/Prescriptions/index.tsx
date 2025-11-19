@@ -18,13 +18,13 @@ export default function Prescriptions(){
                 <View className='w-full justify-between items-center flex-row'>
                     <TouchableOpacity
                     onPress={() => router.back()}>
-                    <Ionicons name="arrow-back-sharp" size={32} color="black" />
+                    <Ionicons name="arrow-back-sharp" size={32} color="black"/>
                     </TouchableOpacity>
 
                     <TouchableOpacity
                         onPress={() => router.navigate('/screens/AddPrescription')}
                         className='w-12 h-12 bg-[#334FDC] rounded-full justify-center items-center'>
-                        <Ionicons name="add-sharp" size={32} color="white" />
+                        <Ionicons name="add-sharp" size={32} color="white"/>
                     </TouchableOpacity>
                 </View>
 
