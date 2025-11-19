@@ -4,13 +4,23 @@ import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Fontisto from '@expo/vector-icons/Fontisto';
 import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 import { useRouter } from "expo-router";
-import { Text, TouchableOpacity, View } from "react-native";
+import { Alert, Text, TouchableOpacity, View } from "react-native";
 
 
 
 
 export default function HomePage(){
     const router = useRouter();
+
+    const createAlert = () =>
+    Alert.alert('Sair', 'Deseja mesmo sair?', [
+      {
+        text: 'Cancel',
+        onPress: () => console.log('Cancel Pressed'),
+        style: 'cancel',
+      },
+      {text: 'OK', onPress: () => router.navigate('/')},
+    ]);
 
     return(
         <View className="flex-1 bg-[#D7E1EA] items-center gap-14 pt-20">
@@ -20,7 +30,7 @@ export default function HomePage(){
                         {/*jaja eu coloco a imagem aqui*/}
                     </View>
                     <TouchableOpacity
-                        onPress={() => router.navigate('/screens/Login/App')}>
+                        onPress={() => createAlert()}>
                         <MaterialIcons name="logout" size={30} color="red" />
                     </TouchableOpacity>
                 </View>

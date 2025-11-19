@@ -1,5 +1,6 @@
 import Button from '@/src/components/Button';
 import Input from '@/src/components/Input';
+import DropdownComponent from '@/src/components/InputSelect';
 import TimeInput from '@/src/components/TimeInput';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from "expo-router";
@@ -43,9 +44,7 @@ export default function AddPrescription() {
                     {/*input recorrencia*/}
                     <View className='w-full gap-3'>
                         <Text className='text-[14px] font-[600]' >Recorrência</Text>
-                        <Input
-                            placeholder='Selecione'
-                        />
+                        <DropdownComponent/>
                     </View>
 
                     <View className='w-full items-center flex-row gap-3 '>
