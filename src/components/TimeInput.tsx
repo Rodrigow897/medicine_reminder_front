@@ -4,36 +4,43 @@ import DateTimePicker, {
 import React, { useState } from "react";
 import { TextInput, TouchableOpacity, View } from "react-native";
 
-export default function TimeInput() {
-  const [time, setTime] = useState<Date>(new Date());
+interface TimeInputProps {
+  value: Date;                     // horário vindo do pai
+  onChangeTime: (time: Date) => void; // callback para enviar o horário pro pai
+}
+
+export default function TimeInput({ value, onChangeTime }: TimeInputProps) {
   const [show, setShow] = useState<boolean>(false);
 
   const onChange = (event: DateTimePickerEvent, selectedTime?: Date) => {
     setShow(false);
 
     if (event.type === "set" && selectedTime) {
-      setTime(selectedTime);
+      onChangeTime(selectedTime);  // Envia o valor para o componente pai
     }
   };
 
   return (
-    <View className="w-full h-[58px] pl-[10px] pr-[10px] border-[1px] rounded-2xl border-[#A2B9CD] bg-white text-[16px] text-[#17222B] justify-center items-cemter">
+    <View className="w-full h-[58px] pl-[10px] pr-[10px] border-[1px] rounded-2xl border-[#A2B9CD] bg-white text-[16px] text-[#17222B] justify-center">
       <TouchableOpacity onPress={() => setShow(true)}>
         <TextInput
-          className=""
           editable={false}
           placeholder="Selecionar hora"
           placeholderTextColor="#999"
-          value={time.toLocaleTimeString("pt-BR", {
-            hour: "2-digit",
-            minute: "2-digit",
-          })}
+          value={
+            value
+              ? value.toLocaleTimeString("pt-BR", {
+                  hour: "2-digit",
+                  minute: "2-digit",
+                })
+              : ""
+          }
         />
       </TouchableOpacity>
 
       {show && (
         <DateTimePicker
-          value={time}
+          value={value || new Date()}
           mode="time"
           is24Hour={true}
           display="default"

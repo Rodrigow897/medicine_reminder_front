@@ -2,19 +2,65 @@ import Button from '@/src/components/Button';
 import Input from '@/src/components/Input';
 import DropdownComponent from '@/src/components/InputSelect';
 import TimeInput from '@/src/components/TimeInput';
+import { usePrescriptions } from "@/src/context/PrescriptionContext";
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from "expo-router";
 import { useState } from 'react';
-import { Switch, Text, TouchableOpacity, View } from "react-native";
+import { Alert, Switch, Text, TouchableOpacity, View } from "react-native";
 
-
+type PrescriptionData = {
+    id: string;
+    title: string;
+    time: string;
+    recurrence: string;
+    takeNow: boolean;
+}
 
 
 
 export default function AddPrescription() {
+    const { addPrescription } = usePrescriptions();
     const [isEnabled, setIsEnabled] = useState(false);
     const toggleSwitch = () => setIsEnabled(previousState => !previousState);
     const router = useRouter();
+
+    //capturar os valores
+    const [prescriptions, setPrescriptions] = useState<PrescriptionData[]>([]);
+    const [title, setTitle] = useState('');
+    const [time, setTime] = useState<Date>(new Date());
+    const [recurrence, setRecurrence] = useState<string>('');
+    const [takeNow, setTakeNow] = useState(false);
+
+    const handleAddPrescription = () => {
+        if (!title || !time || !recurrence) {
+            Alert.alert('Preencha todos os campos');
+            return;
+        }
+
+        const newPrescription: PrescriptionData = {
+            id: new Date().toISOString(),
+            title: title,
+            time: time
+            ? time.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })
+            : "",
+            recurrence: recurrence,
+            takeNow: isEnabled
+        };
+
+        //adicionando na lista
+        addPrescription(newPrescription);
+
+
+        console.log("capturando dados", newPrescription)
+
+        setTitle('');
+        setTime(new Date());
+        setRecurrence('');
+        setTakeNow(false);
+
+        //voltar para tela das listas
+        router.navigate('/screens/Prescriptions');
+    }
 
 
     return (
@@ -31,7 +77,9 @@ export default function AddPrescription() {
                     {/*input medicamento*/}
                     <View className='w-full gap-3'>
                         <Text className='text-[14px] font-[600]' >Remédio</Text>
-                        <Input
+                        <Input 
+                            value={title}
+                            onChangeText={setTitle}
                             placeholder='Nome do medicamento'
                         />
                     </View>
@@ -39,12 +87,17 @@ export default function AddPrescription() {
                     <View className='w-full gap-3'>
                         <Text className='text-[14px] font-[600]' >Horário</Text>
                         <TimeInput
+                            value={time || new Date()} 
+                            onChangeTime={(selectedTime) => setTime(selectedTime)}
                         />
                     </View>
                     {/*input recorrencia*/}
                     <View className='w-full gap-3'>
                         <Text className='text-[14px] font-[600]' >Recorrência</Text>
-                        <DropdownComponent/>
+                        <DropdownComponent
+                            value={recurrence}
+                            onChange={(value) => setRecurrence(value)}
+                        />
                     </View>
 
                     <View className='w-full items-center flex-row gap-3 '>
@@ -60,6 +113,7 @@ export default function AddPrescription() {
 
 
                     <Button
+                        onPress={handleAddPrescription}
                         icon={<Ionicons name="checkmark-sharp" size={24} color="white" />}
                         className='bg-[#C02636] flex-row gap-3 absolute bottom-14'
                         title='Adicionar'

@@ -23,8 +23,12 @@ const data: Item[] = [
   { label: "A cada 8 dias", value: "12" },
 ];
 
-const DropdownComponent: React.FC = () => {
-  const [value, setValue] = useState<string | null>(null);
+type Props = {
+  onChange: (value: string) => void;
+  value: string;
+};
+
+const DropdownComponent: React.FC<Props> = ({ onChange, value }) => {
   const [isFocus, setIsFocus] = useState(false);
 
   const renderLabel = () => {
@@ -43,7 +47,7 @@ const DropdownComponent: React.FC = () => {
   };
 
   return (
-    <View className="bg-white ">
+    <View className="bg-white">
       {renderLabel()}
 
       <Dropdown
@@ -54,22 +58,22 @@ const DropdownComponent: React.FC = () => {
           paddingHorizontal: 8,
           borderColor: isFocus ? "blue" : "gray",
         }}
-        placeholderStyle={{ fontSize: 16, }}
+        placeholderStyle={{ fontSize: 16 }}
         selectedTextStyle={{ fontSize: 16 }}
-        inputSearchStyle={{ fontSize: 16, color:'#9ca3af', height: 40 }}
+        inputSearchStyle={{ fontSize: 16, color: "#9ca3af", height: 40 }}
         iconStyle={{ width: 20, height: 20 }}
         data={data}
         search
         maxHeight={175}
         labelField="label"
-        valueField="value"
+        valueField="label"
         placeholder={!isFocus ? "Selecione" : "..."}
-        searchPlaceholder="Search..."
+        searchPlaceholder="Pesquisar..."
         value={value}
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
-        onChange={(item: Item) => {
-          setValue(item.value);
+        onChange={(item) => {
+          onChange(item.label);  // sempre string
           setIsFocus(false);
         }}
         renderLeftIcon={() => (

@@ -1,7 +1,10 @@
 import { Stack } from 'expo-router'
+import { PrescriptionProvider } from '../context/PrescriptionContext'
 
 export default function layout() {
   return (
-    <Stack screenOptions={{headerShown:false}}/>
+    <PrescriptionProvider>
+      <Stack screenOptions={{headerShown:false}}/>
+    </PrescriptionProvider>
     )
 }
