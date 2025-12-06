@@ -1,9 +1,10 @@
 import "@/global.css";
 import Button from "@/src/components/Button";
 import Input from "@/src/components/Input";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useRouter } from "expo-router";
-import { useCallback } from "react";
-import { Dimensions, Image, Text, View } from "react-native";
+import { useCallback, useState } from "react";
+import { Alert, Dimensions, Image, Text, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -11,9 +12,36 @@ import Animated, {
   withSpring,
   withTiming
 } from "react-native-reanimated";
+import { useAuth } from "../context/authContext";
+import api from "../services/api";
 
 export function Index() {
+  const { setUser } = useAuth();  // ← 👉 Pega a função do contexto
   const router = useRouter();
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function handleLogin() {
+    try {
+      const response = await api.post("users/login", {
+        email,
+        password,
+      });
+
+      const loggedUser = response.data.user; // Ajuste conforme seu backend
+
+      setUser(loggedUser);  // ← 👉 Salva no contexto
+      await AsyncStorage.setItem("user", JSON.stringify(loggedUser)); // opcional
+
+      Alert.alert("Login bem-sucedido!");
+      router.navigate("/screens/HomePage");
+      console.log("Login bem-sucedido:", response.data);
+
+    } catch (error) {
+      Alert.alert("Erro", "Erro ao fazer login. Verifique suas credenciais.");
+      console.log("Erro ao fazer login:", error);
+    }
+  }
 
 
   // Altura da tela para garantir que a view comece totalmente fora da tela
@@ -68,18 +96,26 @@ export function Index() {
 
           <View className="w-full gap-3">
             <Text className="Text-[#17222B] font-[600]">E-mail</Text>
-            <Input placeholder="email@exemplo.com" />
+            <Input placeholder="email@exemplo.com" 
+              onChangeText={setEmail}
+              value={email}
+              keyboardType="email-address"
+            />
           </View>
 
           <View className="w-full gap-3">
             <Text className="Text-[#17222B] font-[600]">Senha</Text>
-            <Input placeholder="Digite sua senha" />
+            <Input placeholder="Digite sua senha" 
+              onChangeText={setPassword}
+              value={password}
+              secureTextEntry
+            />
           </View>
 
           {/* Buttons */}
           <View className="mt-7 gap-8">
             <Button className="bg-[#C02636]"
-              onPress={() => router.navigate('/screens/HomePage')}
+              onPress={handleLogin}
              title="Entrar" />
 
             <Button className="bg-[#151f27]" title="Registrar"

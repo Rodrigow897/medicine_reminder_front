@@ -1,9 +1,10 @@
 import "@/global.css";
 import Button from "@/src/components/Button";
 import Input from "@/src/components/Input";
+import api from "@/src/services/api";
 import { useRouter } from "expo-router";
-import { useCallback } from "react";
-import { Dimensions, Image, Text, View } from "react-native";
+import { useCallback, useState } from "react";
+import { Alert, Dimensions, Image, Text, View } from "react-native";
 import Animated, {
   useAnimatedStyle,
   useSharedValue,
@@ -14,6 +15,27 @@ import Animated, {
 
 export default function Register() {
   const router = useRouter();
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  async function HandleRegister() {
+    try {
+      const response = await api.post("/users/register", {
+        name,
+        email,
+        password,
+      });
+
+      Alert.alert("Sucesso", "Usuário cadastrado com sucesso!", [
+        { text: "OK", onPress: () => router.back() }
+      ]);
+      console.log(response.data);
+    } catch (error) {
+      Alert.alert("Erro", "Não foi possível cadastrar o usuário ou usuario já existe.");
+      console.log(error);
+    }
+  }
 
   // Altura da tela para garantir que a view comece totalmente fora da tela
   const screenHeight = Dimensions.get("window").height;
@@ -67,26 +89,38 @@ export default function Register() {
 
           <View className="w-full gap-3">
             <Text className="Text-[#17222B] font-[600]">E-mail</Text>
-            <Input placeholder="email@exemplo.com" />
+            <Input placeholder="email@exemplo.com" 
+              onChangeText={setEmail}
+              value={email}
+              keyboardType="email-address"
+            />
           </View>
 
           <View className="w-full gap-3">
             <Text className="Text-[#17222B] font-[600]">Senha</Text>
-            <Input placeholder="Crie uma senha" />
+            <Input placeholder="Crie uma senha" 
+              secureTextEntry={true}
+              onChangeText={setPassword}
+              value={password}
+            />
           </View>
 
           <View className="w-full gap-3">
             <Text className="Text-[#17222B] font-[600]">Nome</Text>
-            <Input placeholder="ex: Elias" />
+            <Input placeholder="ex: Elias"
+              onChangeText={setName}
+              value={name}
+            />
           </View>
 
           {/* Buttons */}
           <View className="mt-7 gap-8">
             <Button className="bg-[#C02636]" 
-              title="Salvar" 
+              title="Salvar"
+               onPress={HandleRegister}
             />
             <Button className="bg-[#162029]" title="Voltar"
-              onPress={() => router.navigate('./Login')}
+              onPress={() => router.back()}
            />
           </View>
         </View>

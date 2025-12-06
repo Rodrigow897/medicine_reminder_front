@@ -1,4 +1,5 @@
 import Button from '@/src/components/Button';
+import { useAuth } from "@/src/context/authContext";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Fontisto from '@expo/vector-icons/Fontisto';
@@ -11,6 +12,7 @@ import { Alert, Text, TouchableOpacity, View } from "react-native";
 
 export default function HomePage(){
     const router = useRouter();
+    const { user } = useAuth();
 
     const createAlert = () =>
     Alert.alert('Sair', 'Deseja mesmo sair?', [
@@ -37,7 +39,7 @@ export default function HomePage(){
 
                 <View className="flex flex-col items-start w-full gap-2">
                     <Text className='text-[#293C4C] text-[16px] font-[400]'>Boas vindas</Text>
-                    <Text className='text-[#17222B] text-[20px] font-[800]'>Rodrigo Wesley</Text>
+                    <Text className='text-[#17222B] text-[20px] font-[800]'>{user?.name}</Text>
                 </View>
             </View>
 

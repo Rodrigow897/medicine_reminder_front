@@ -1,10 +1,13 @@
 import { Stack } from 'expo-router'
 import { PrescriptionProvider } from '../context/PrescriptionContext'
+import { AuthProvider } from '../context/authContext'
 
 export default function layout() {
   return (
-    <PrescriptionProvider>
-      <Stack screenOptions={{headerShown:false}}/>
-    </PrescriptionProvider>
+    <AuthProvider>
+      <PrescriptionProvider>
+        <Stack screenOptions={{headerShown:false}}/>
+      </PrescriptionProvider>
+    </AuthProvider>
     )
 }
