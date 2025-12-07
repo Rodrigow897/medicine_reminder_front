@@ -1,5 +1,5 @@
 import Button from '@/src/components/Button';
-import { useAuth } from "@/src/context/authContext";
+import { useAuth } from "@/src/context/AuthContext";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import Fontisto from '@expo/vector-icons/Fontisto';

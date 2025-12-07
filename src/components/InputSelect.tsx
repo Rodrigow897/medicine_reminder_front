@@ -1,27 +1,18 @@
 import AntDesign from "@expo/vector-icons/AntDesign";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, View } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
+import api from "../services/api";
 
-type Item = {
-  label: string;
-  value: string;
+type RecurrenceFromDB = {
+  id: string;
+  title: string;
 };
 
-const data: Item[] = [
-  { label: "A cada 3 horas", value: "1" },
-  { label: "A cada 4 horas", value: "2" },
-  { label: "A cada 6 horas", value: "3" },
-  { label: "A cada 12 horas", value: "4" },
-  { label: "A cada 1 dia", value: "5" },
-  { label: "A cada 2 dias", value: "6" },
-  { label: "A cada 3 dias", value: "7" },
-  { label: "A cada 4 dias", value: "8" },
-  { label: "A cada 5 dias", value: "9" },
-  { label: "A cada 6 dias", value: "10" },
-  { label: "A cada 7 dias", value: "11" },
-  { label: "A cada 8 dias", value: "12" },
-];
+type Item = {
+  id: string;
+  label: string;
+};
 
 type Props = {
   onChange: (value: string) => void;
@@ -30,15 +21,34 @@ type Props = {
 
 const DropdownComponent: React.FC<Props> = ({ onChange, value }) => {
   const [isFocus, setIsFocus] = useState(false);
+  const [recurrences, setRecurrences] = useState<Item[]>([]);
+
+  useEffect(() => {
+    const fetchRecurrences = async () => {
+      try {
+        const response = await api.get<RecurrenceFromDB[]>("/recurrence");
+        
+        // Converter name → label porque o dropdown precisa de labelField
+        const mapped = response.data.map((item) => ({
+          id: item.id.toString(),
+          label: item.title,
+        }));
+
+        setRecurrences(mapped);
+      } catch (error) {
+        console.error("Erro ao buscar recorrências:", error);
+      }
+    };
+
+    fetchRecurrences();
+  }, []);
 
   const renderLabel = () => {
     if (value || isFocus) {
       return (
-        <Text
-          className={`absolute left-[22px] top-[-8] z-50 px-2 bg-white text-[14px] ${
-            isFocus ? "text-blue-600" : "text-black"
-          }`}
-        >
+        <Text className={`absolute left-[22px] z-10 top-[-10] px-2 bg-white text-[14px] ${
+          isFocus ? "text-blue-600" : "text-black"
+        }`}>
           Recorrência
         </Text>
       );
@@ -49,7 +59,6 @@ const DropdownComponent: React.FC<Props> = ({ onChange, value }) => {
   return (
     <View className="bg-white">
       {renderLabel()}
-
       <Dropdown
         style={{
           borderWidth: 1,
@@ -58,22 +67,18 @@ const DropdownComponent: React.FC<Props> = ({ onChange, value }) => {
           paddingHorizontal: 8,
           borderColor: isFocus ? "blue" : "gray",
         }}
-        placeholderStyle={{ fontSize: 16 }}
-        selectedTextStyle={{ fontSize: 16 }}
-        inputSearchStyle={{ fontSize: 16, color: "#9ca3af", height: 40 }}
-        iconStyle={{ width: 20, height: 20 }}
-        data={data}
-        search
-        maxHeight={175}
+        data={recurrences}
         labelField="label"
-        valueField="label"
+        valueField="id" // Envia o id para o back-end ✔️
         placeholder={!isFocus ? "Selecione" : "..."}
-        searchPlaceholder="Pesquisar..."
         value={value}
+        maxHeight={175}
+        search
+        searchPlaceholder="Pesquisar..."
         onFocus={() => setIsFocus(true)}
         onBlur={() => setIsFocus(false)}
         onChange={(item) => {
-          onChange(item.label);  // sempre string
+          onChange(item.id);
           setIsFocus(false);
         }}
         renderLeftIcon={() => (

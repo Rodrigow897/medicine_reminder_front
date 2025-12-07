@@ -12,7 +12,7 @@ import Animated, {
   withSpring,
   withTiming
 } from "react-native-reanimated";
-import { useAuth } from "../context/authContext";
+import { useAuth } from "../context/AuthContext";
 import api from "../services/api";
 
 export function Index() {

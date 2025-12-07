@@ -2,7 +2,8 @@ import Button from '@/src/components/Button';
 import Input from '@/src/components/Input';
 import DropdownComponent from '@/src/components/InputSelect';
 import TimeInput from '@/src/components/TimeInput';
-import { usePrescriptions } from "@/src/context/PrescriptionContext";
+import { useAuth } from '@/src/context/AuthContext';
+import api from '@/src/services/api';
 import Ionicons from '@expo/vector-icons/Ionicons';
 import { useRouter } from "expo-router";
 import { useState } from 'react';
@@ -10,57 +11,69 @@ import { Alert, Switch, Text, TouchableOpacity, View } from "react-native";
 
 type PrescriptionData = {
     id: string;
-    title: string;
-    time: string;
+    name: string;
+    hours: string;
     recurrence: string;
-    takeNow: boolean;
+    takenow: boolean;
 }
 
 
 
 export default function AddPrescription() {
-    const { addPrescription } = usePrescriptions();
     const [isEnabled, setIsEnabled] = useState(false);
-    const toggleSwitch = () => setIsEnabled(previousState => !previousState);
+    const toggleSwitch = () => {
+        setIsEnabled(previous => {
+            const newValue = !previous;
+                setTakeNow(newValue); // sincroniza com takenow
+            return newValue;
+        });
+    };
     const router = useRouter();
 
+    
     //capturar os valores
+    const { user } = useAuth();
     const [prescriptions, setPrescriptions] = useState<PrescriptionData[]>([]);
-    const [title, setTitle] = useState('');
-    const [time, setTime] = useState<Date>(new Date());
-    const [recurrence, setRecurrence] = useState<string>('');
+    const [name, setName] = useState('');
+    const [hours, setHours] = useState<Date>(new Date());
+    const [recurrence_id, setRecurrence_id] = useState<string>('');
     const [takeNow, setTakeNow] = useState(false);
 
-    const handleAddPrescription = () => {
-        if (!title || !time || !recurrence) {
+    
+
+    async function handleAddPrescription() {
+        if (!name || !hours || !recurrence_id) {
             Alert.alert('Preencha todos os campos');
             return;
         }
+        try {
 
-        const newPrescription: PrescriptionData = {
-            id: new Date().toISOString(),
-            title: title,
-            time: time
-            ? time.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" })
-            : "",
-            recurrence: recurrence,
-            takeNow: isEnabled
-        };
-
-        //adicionando na lista
-        addPrescription(newPrescription);
+        if (!user) {
+            Alert.alert("Erro", "Usuário não autenticado!");
+            return;
+        }
 
 
-        console.log("capturando dados", newPrescription)
+        const response = await api.post<PrescriptionData>('/prescriptions', {
+            name,
+            hours: hours.toISOString().slice(11, 16),// pega somente HH:mm
+            recurrence_id,
+            takenow: isEnabled,
+            user_id: user.id,
+        });
 
-        setTitle('');
-        setTime(new Date());
-        setRecurrence('');
-        setTakeNow(false);
+        console.log('Prescrição adicionada com sucesso:', response.data);
+        } catch (error) {
+            console.log('Erro ao adicionar prescrição:', error);
+            Alert.alert('Erro ao adicionar prescrição. Tente novamente.');
+            return;
+        }
 
         //voltar para tela das listas
         router.navigate('/screens/Prescriptions');
     }
+
+
 
 
     return (
@@ -78,8 +91,8 @@ export default function AddPrescription() {
                     <View className='w-full gap-3'>
                         <Text className='text-[14px] font-[600]' >Remédio</Text>
                         <Input 
-                            value={title}
-                            onChangeText={setTitle}
+                            value={name}
+                            onChangeText={setName}
                             placeholder='Nome do medicamento'
                         />
                     </View>
@@ -87,16 +100,16 @@ export default function AddPrescription() {
                     <View className='w-full gap-3'>
                         <Text className='text-[14px] font-[600]' >Horário</Text>
                         <TimeInput
-                            value={time || new Date()} 
-                            onChangeTime={(selectedTime) => setTime(selectedTime)}
+                            value={hours || new Date()} 
+                            onChangeTime={(selectedTime) => setHours(selectedTime)}
                         />
                     </View>
                     {/*input recorrencia*/}
                     <View className='w-full gap-3'>
                         <Text className='text-[14px] font-[600]' >Recorrência</Text>
                         <DropdownComponent
-                            value={recurrence}
-                            onChange={(value) => setRecurrence(value)}
+                            value={recurrence_id}
+                            onChange={(value) => setRecurrence_id(value)}
                         />
                     </View>
 
